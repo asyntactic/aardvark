@@ -1,0 +1,72 @@
+html,
+body {
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  height: 100%;
+  padding-top: 40px;
+}
+
+div.scrollbox {
+  width:500px;
+  height:350px;
+  border:1px solid#ccc;
+  background:#f2f2f2;
+  padding:6px;
+  overflow:auto;
+  white-space: nowrap;
+}
+
+div.messagebox {
+  border:1px solid#ccc;
+  background:#f2f2f2;
+  padding: 10px;
+}
+
+span.message {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: green;
+}
+
+span.error {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: red;
+}
+
+span.label {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
+}
+
+table.declaration td {
+  padding: 3px;
+}
+
+table.declaration-list td {
+  padding: 3px;
+}
+
+span.value {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: black;
+}
+
+span.value textarea {
+  overflow:auto;
+}
+
+span.formula {
+  display: block;
+  margin-left: 100px;
+  margin-right: 0px;
+  margin-bottom: 20px;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  font-style: italic;
+  font-size: 18px;
+  color: black;
+}
+
+button.btn-builder {
+}

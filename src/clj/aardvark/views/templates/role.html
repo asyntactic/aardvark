@@ -1,0 +1,64 @@
+{% extends "aardvark/views/templates/base.html" %}
+{% block content %}
+
+<h2><a href="{{servlet-context}}/declaration/get?type=entity&render=true&id={{declaration.parent_id}}">
+        <img src="/img/back.png" width="30"/></a>
+    Role{% if declaration.id %} {{declaration.name}}
+    {% endif %}</h2>
+<div class="jumbotron">
+    <table border="0">
+        <tr valign="top"><td width="50%">
+            <form action="{{servlet-context}}/declaration/put" method="POST">
+                <input type="hidden" name="type" value="role"/>
+                <input type="hidden" name="id" value="{{declaration.id}}"/>
+                <input type="hidden" name="parent_id" value="{{declaration.parent_id}}"/>
+                <table border="0" class="declaration">
+                    <tr><td><span class="label">Name</span></td>
+                        <td><span class="value">
+                            <input type="text" name="name" value="{{declaration.name}}" style="width:100%;"/>
+                            </span></td></tr>
+                    <tr><td><span class="label">Description</span></td>
+                        <td><span class="value">
+                            <textarea name="description" rows="4" cols="30">{{declaration.description}}</textarea>
+                            </span>
+                        </td></tr>
+                    <tr><td><span class="label">Role Type</span></td>
+                        <td><span class="value">
+                            <select name="role_type" style="width:100%;">
+                                <option value=""></option>
+                                {% for entity in entities %}
+                                <option value="{{entity.id}}"
+                                        {% ifequal entity.id declaration.role_type %}selected="selected"
+                                        {% endifequal %}>
+                                    {{entity.name}}</option>
+                                {% endfor %}
+                            </select>
+                            </span>
+                        </td></tr>
+                    <tr><td><span class="label">Semantic Type</span></td>
+                        <td><span class="value">
+                            <select name="semantic_type" style="width:100%;">
+                                <option value=""></option>
+                                {% for st in semantic-types %}
+                                <option value="{{st.id}}"
+                                        {% ifequal st.id declaration.semantic_type %}selected="selected"
+                                        {% endifequal %}>
+                                    {{st.name}}</option>
+                                {% endfor %}
+                            </select>
+                            </span>
+                        </td></tr>
+                    <tr>
+                    <td><a href="{{servlet-context}}/declaration/remove?type=role&id={{declaration.id}}">
+                        <img src="/img/remove-icon.png" width="25"/></a></td>
+                    <td><input type="image" src="/img/save-icon.png" width="25" value="save"/></td>
+                    </tr>
+                </table>
+            </form>
+            </td>
+            <td style="padding-left: 10px" width="50%">
+            </td></tr>
+    </table>
+</div>
+
+{% endblock %}

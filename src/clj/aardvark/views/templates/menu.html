@@ -1,0 +1,115 @@
+<div class="navbar-collapse collapse">
+  {% if user-id %}
+    <div class="btn-group pull-left">
+      <ul class="nav navbar-nav">
+
+          {% if superadmin %}
+          <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            Admin <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="{{servlet-context}}/users">Users</a></li>
+          </ul>
+          {% endif %}
+
+          <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            Domains <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu">
+              {% for domn in domains %}
+              <li><a href="{{servlet-context}}/domain/get?id={{domn.id}}">{{domn.name}}
+                  {% ifequal domn.id my-domain %}&nbsp;&#10004;{% endifequal %}</a></li>
+              {% endfor %}
+            {% if superadmin %}
+              <li class="divider"></li>
+              <li><a href="{{servlet-context}}/domain/add">Add Domain</a></li>
+            {% endif %}
+          </ul>
+        </li>
+
+          <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Concept Model <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                  <li><a href="{{servlet-context}}/declaration/list?type=entity&render=true">Entities</a></li>
+                  <li><a href="{{servlet-context}}/declaration/list?type=semantic-type&render=true">Semantic Types</a></li>
+                  <li><a href="{{servlet-context}}/reports/concept-report">Concept Graph</a></li>
+              </ul>
+          </li>
+
+          <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Data Model <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                  <li><a href="{{servlet-context}}/declaration/list?type=context&render=true">Contexts</a></li>
+                  <li><a href="{{servlet-context}}/declaration/list?type=schema&render=true">Schemas</a></li>
+                  <li><a href="{{servlet-context}}/declaration/list?type=datastore&render=true&full=true">Datastores</a></li>
+              </ul>
+          </li>
+
+          <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Functions <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                  <li><a href="{{servlet-context}}/declaration/list?type=relational-function&render=true">Relational</a></li>
+                  <li><a href="{{servlet-context}}/declaration/list?type=semantic-function&render=true&full=true">Semantic</a></li>
+              </ul>
+          </li>
+
+          <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  Transformation <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                  <li><a href="{{servlet-context}}/declaration/list?type=conversion&render=true">Conversions</a></li>
+              </ul>
+          </li>
+
+        </ul>
+    </div>
+
+    <div class="btn-group pull-right">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="icon-user"></i>{{user-id}} <b class="caret"></b>
+          </a>
+            <ul class="dropdown-menu">
+              <li><a href="{{servlet-context}}/profile">Profile</a></li>
+              <li class="divider"></li>
+              <li><a href="{{servlet-context}}/logout">Sign Out</a></li>
+            </ul>
+        </li>
+      </ul>
+    </div>
+
+    {% else %}
+
+    <div class="btn-group pull-right">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <form action="{{servlet-context}}/login" class="navbar-form" method="POST">
+            <input class="span2"
+                   id="id"
+                   name="id"
+                   placeholder="user id"
+                   style="margin-right: 5px"
+                   type="text"/>
+            <input class="span2"
+                   id="pass"
+                   name="pass"
+                   placeholder="password"
+                   style="margin-right: 5px"
+                   type="password"/>
+            <input class="btn" type="submit" value="Login"/>
+          </form>
+        </li>
+      </ul>
+    </div>
+  {% endif %}
+</div>

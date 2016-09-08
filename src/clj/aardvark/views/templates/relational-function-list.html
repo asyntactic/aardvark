@@ -1,0 +1,20 @@
+{% extends "aardvark/views/templates/base.html" %}
+{% block content %}
+
+<h3>Relational Functions</h3>
+
+<div class="jumbotron scrollbox" style="width:100%;">
+    <table border="0" class="declaration-list">
+        <tr><th width="100"></th></tr>
+        {% for e in declarations %}
+        <tr><td><a href="{{servlet-context}}/declaration/get?type=relational-function&id={{e.id}}&render=true">
+            {{e.name|default:"Undefined"}}</a></td></tr>
+        {% endfor %}
+
+        <tr><td colspan="2"><br/><a href="{{servlet-context}}/declaration/put?type=relational-function">
+            <img src="/img/add-icon.png" width="15"/></a>
+            </td></tr>
+    </table>
+</div>
+
+{% endblock %}

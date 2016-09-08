@@ -1,0 +1,42 @@
+{% extends "aardvark/views/templates/base.html" %}
+{% block content %}
+
+<h2>Users</h2>
+
+{% if superadmin %}
+<div class="jumbotron">
+    <div class="scrollbox">
+    <table border="0">
+        <tr><th width="100">Id</th>
+            <th width="150">Last Login</th>
+            <th width="50">Active</th>
+        </tr>
+    {% for user in users %}
+        <tr>
+            <td><a href="{{servlet-context}}/users/edit?id={{user.id}}">
+                {{user.id}}</a></td>
+            <td>{{user.last_login|date:shortDateTime}}</td>
+            <td><a href="{{servlet-context}}/users/toggle-active?id={{user.id}}">
+                {% if user.disabled %}
+                No
+                {% else %}
+                Yes
+                {% endif %}
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+
+    <div style="padding:10px">
+    <form action="{{servlet/context}}/users/new" method="GET">
+        <input type="submit" value="New User"/>
+        <input type="text" name="id"/>
+    </form>
+    </div>
+
+</div>
+{% endif %}
+
+{% endblock %}

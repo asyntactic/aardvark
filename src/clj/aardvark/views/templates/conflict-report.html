@@ -1,0 +1,38 @@
+{% extends "aardvark/views/templates/base.html" %}
+{% block content %}
+
+<h2><a href="{{servlet-context}}/declaration/get?type=conversion&render=true&id={{conversion-id}}">
+        <img src="/img/back.png" width="30"/></a>
+    Conflict Report for {{conversion-name}}
+</h2>
+<!-- TODO datastores -->
+
+<div class="jumbotron">
+    <h3>Semantic Conflicts</h3>
+    <table border="1">
+        <tr><th width="150">Modifier</th><th width="50">Source</th>
+            <th width="50">Target</th><th width="450">Resolution</th></tr>
+        {% for c in semantic-conflicts %}
+        <tr><td>{{c|modifier}}</td><td>{{c|conflict-source-value}}</td>
+            <td>{{c|conflict-target-value}}</td><td>{{c|resolution|safe}}</td></tr>
+        {% endfor %}
+    </table>
+
+    <h3> Relational Conflicts</h3>
+    <table border="1">
+        <tr><th width="250">Target Role</th>
+            <th width="450">Resolution</th></tr>
+        {% for c in relational-conflicts %}
+        <tr><td>{{c|target-role}}</td><td>{{c|resolution|safe}}</td></tr>
+        {% endfor %}
+    </table>
+    <br/>
+    {% if all-resolved %}
+    <p>
+    <a href="{{servlet-context}}/connector/deploy?id={{conversion-id}}">Deploy
+        <img src="/img/execute-icon.png" width="30"/></a>
+    </p>
+    {% endif %}
+</div>
+
+{% endblock %}

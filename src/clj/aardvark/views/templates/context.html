@@ -1,0 +1,58 @@
+{% extends "aardvark/views/templates/base.html" %}
+{% block content %}
+
+<h2><a href="{{servlet-context}}/declaration/list?type=context&render=true">
+        <img src="/img/back.png" width="30"/></a>
+    Context{% if declaration.id %} {{declaration.name}}
+    {% endif %}</h2>
+<div class="jumbotron">
+    <table border="0">
+        <tr valign="top"><td width="50%">
+            <form action="{{servlet-context}}/declaration/put" method="POST">
+                <input type="hidden" name="type" value="context"/>
+                <input type="hidden" name="id" value="{{declaration.id}}"/>
+                <table border="0" class="declaration">
+                    <tr><td><span class="label">Name</span></td>
+                        <td><span class="value">
+                            <input type="text" name="name" value="{{declaration.name}}" style="width:100%;"/>
+                            </span></td></tr>
+                    <tr><td><span class="label">Description</span></td>
+                        <td><span class="value">
+                            <textarea name="description" rows="4" cols="30">{{declaration.description}}</textarea>
+                            </span>
+                        </td></tr>
+                    <tr>
+                    <td><a href="{{servlet-context}}/declaration/remove?type=context&id={{declaration.id}}">
+                        <img src="/img/remove-icon.png" width="25"/></a></td>
+                    <td><input type="image" src="/img/save-icon.png" width="25" value="save"/></td>
+                    </tr>
+                </table>
+            </form>
+            </td>
+            <td style="padding-left: 10px" width="50%">
+                <table border="0" class="declaration-list">
+                    <tr><th width="200">Name</th><th>Value</th><th></th></tr>
+                    {% for m in modifiers %}
+                    <form method="POST" action="{{servlet-context}}/declaration/put?type=modifier-value">
+                        <tr><td>{{m.st_name}}.{{m.name}}</td>
+                            <td>
+                                <input type="hidden" name="parent_id" value="{{declaration.id}}"/>
+                                <input type="hidden" name="modifier" value="{{m.id}}"/>
+                                <input type="hidden" name="id" value="{{m.mv.id}}"/>
+                                <input type="text" name="value" width="30" list="values{{forloop.counter}}" value="{{m.mv.value}}"/>
+                            </td><td>
+                            <input type="image" src="/img/save-icon.png" height="15px"/>
+                            </td></tr>
+                    </form>
+                    <datalist id="values{{forloop.counter}}">
+                        {% for val in m.existing-values %}
+                        <option>{{val.value}}</option>
+                        {% endfor %}
+                    </datalist>
+                    {% endfor %}
+                </table>
+            </td></tr>
+    </table>
+</div>
+
+{% endblock %}

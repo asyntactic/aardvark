@@ -1,0 +1,74 @@
+{% extends "aardvark/views/templates/base.html" %}
+{% block content %}
+
+<h2> {% ifequal domain.name nil %} New Domain
+    {% else %} Domain: {{domain.name}}
+    {% if superadmin %}
+    <a href="{{servlet-context}}/domain/delete?id={{domain.id}}"><img src="/img/remove-icon.png" width="40"/></a>
+    {% endif %}
+    {% endifequal %}</h2>
+
+    {% if superadmin %}
+<div class="jumbotron">
+    <table border="0">
+            <tr><td style="width:200px;">
+        <form action="{{servlet-context}}/domain/update" method="POST">
+            <input type="hidden" id="id" name="id" value="{{domain.id}}"/>
+            <div class="form-group col-lg-3">
+                <label for="name">Name</label>
+                <p style="width:200px;">
+                    <input class="form-control" id="name" name="name" tabindex="1" type="text" value={{domain.name}}></input>
+                </p>
+                <label for="description">Description</label>
+                <p style="width:200px;">
+                    <textarea cols="40" class="form-control" id="description" name="description" tabindex="2">{{domain.description}}</textarea>
+                </p>
+                <input class="btn" tabindex="4" type="submit" value="update domain">
+            </div>
+        </form>
+        </td><td>
+
+        <label>Users</label><br/>
+        <div class="scrollbox" style="width:250px; height:125px;">
+            <table border="0">
+                <tr><th width="100">Id</th>
+                    <th width="50"></th>
+                </tr>
+                {% for user in users %}
+                <tr>
+                    <td><a href="{{servlet-context}}/users/edit?id={{user.id}}">
+                        {{user.id}}</a></td>
+                    <td><a href="{{servlet-context}}/domain/remove-user?id={{user.id}}&domain-id={{domain.id}}">
+                        <img src="/img/remove-icon.png" width="30px"/></a></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div style="padding:10px">
+            <form action="{{servlet/context}}/domain/add-user" method="GET">
+                <input class="btn" type="submit" value="add user"/>
+                <input type="hidden" name="domain-id" value="{{domain.id}}"/>
+                <input type="text" name="id"/>
+            </form>
+        </div>
+
+        </td><td>
+        <label>Domain Statistics</label>
+        <ul>
+            <li>Entities: {{stats.entities}}</li>
+            <li>Roles: {{stats.roles}}</li>
+            <li>Semantic Types: {{stats.semantic-types}}</li>
+            <li>Datastores: {{stats.datastores}}</li>
+            <li>Schemas: {{stats.schemas}}</li>
+            <li>Contexts: {{stats.contexts}}</li>
+            <li>Functions: {{stats.functions}}</li>
+            <li>Conversions: {{stats.conversions}}</li>
+        </ul>
+        </td></tr></table>
+</div>
+    {% else %}
+        <div class="jumbotron">{{domain.description}}</div>
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,123 @@
+{% extends "aardvark/views/templates/base.html" %}
+{% block content %}
+
+<h2><a href="{{servlet-context}}/declaration/get?type={{parent-type}}&render=true&id={{declaration.parent_id}}">
+        <img src="/img/back.png" width="30"/></a>
+    Edit Formula</h2>
+
+<div class="jumbotron">
+    <table border="0">
+        <tr><td colspan="2"><span class="formula">
+            {% ifequal formula-type "formula-sf" %}
+            {{declaration.output|default:"undefined"}} = {{declaration.operation|default:"undefined"}}({{declaration.arguments|arguments}})
+            {% else %}
+            {{declaration.output|resolve-role|default:"undefined"}} = {{declaration.operation|default:"undefined"}}({{declaration.arguments|arguments}})
+            {% endifequal %}
+            </span></td></tr>
+        <tr valign="top"><td width="50%">
+            <form action="{{servlet-context}}/declaration/put" method="POST">
+                <input type="hidden" name="type" value="{{formula-type}}"/>
+                <input type="hidden" name="id" value="{{declaration.id}}"/>
+                <input type="hidden" name="parent_id" value="{{declaration.parent_id}}"/>
+                <input type="hidden" name="function_type"
+                       value="{% ifequal parent-type "semantic-function" %}Semantic{% else %}Relational{% endifequal %}" />
+                <table border="0" class="declaration">
+                    <tr><td><span class="label">{% ifequal formula-type "formula-sf" %}Output Variable
+                                                {% else %}Output Role{% endifequal %}</span></td>
+                        <td><span class="value">
+                            <input type="text" name="output" {% ifequal formula-type "formula-rf" %}id="output" {% endifequal %} list="outputs" value="{{declaration.output}}" style="width:100%;"/>
+                            <datalist id="outputs">
+                                <option>RETURN_VALUE</option>
+                            </datalist>
+                            </span></td></tr>
+                    <tr><td><span class="label">Operation</span></td>
+                        <td><span class="value">
+                            <input type="text" name="operation" list="lib-functions" value="{{declaration.operation}}" style="width:100%;"/>
+                            <datalist id="lib-functions">
+                                {% for func in library %}
+                                <option>{{func.name}}</option>
+                                {% endfor %}
+                            </datalist>
+                            </span></td></tr>
+                    <tr><td><span class="label">Arguments</span></td>
+                        <td><span class="value">
+                            <textarea placeholder="One argument per line of the form
+                                                   flags:argument
+                                                   flags - q (quoted), r/v/c/m (role/variable/constant/modifier_value)
+                                                   Example - qc:foobar" id="arguments-ta"
+                                      name="arguments" rows="4" cols="50">{{declaration.arguments}}</textarea>
+                            </span></td></tr>
+                    <tr>
+                    <td><a href="{{servlet-context}}/declaration/remove?type={{formula-type}}&id={{declaration.id}}">
+                        <img src="/img/remove-icon.png" width="25"/></a></td>
+                    <td><input type="image" src="/img/save-icon.png" width="25" value="save"/></td>
+                    </tr>
+                </table>
+            </form>
+            </td>
+            <td width="50%">
+                <div style="border:1px solid#999999; background:#dddddd; padding:6px;">
+                    <table border="0">
+                        {% ifequal formula-type "formula-sf" %}
+                        <!-- SF -->
+                        <tr><td style="padding:2px;">System Variables</td>
+                            <td>
+                                <button onclick="aardvark.main.placearg(this.value);" class="btn-builder btn-default" value="v:SOURCE_MODIFIER">Source Modifier</button>
+                                <button onclick="aardvark.main.placearg(this.value);" class="btn-builder btn-default" value="v:TARGET_MODIFIER">Target Modifier</button>
+                                <button onclick="aardvark.main.placearg(this.value);" class="btn-builder btn-default" value="v:SOURCE_VALUE">Source Value</button>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <!-- RF -->
+                        <tr><td style="padding:2px;">Roles</td>
+                            <td><select id="roleslist">
+                                    <option></option>
+                                {% for role in roles %}
+                                    <option value="r:{{role.id}}">{{role.entityname}}.{{role.name}}</option>
+                                {% endfor %}
+                                </select>
+                                <button onclick="aardvark.main.placearg(aardvark.main.getSelectValue('roleslist'));" class="btn-builder btn-default">Argument</button>
+                                <button onclick="aardvark.main.setoutput(aardvark.main.getSelectValue('roleslist'));" class="btn-builder btn-default">Output</button>
+                            </td></tr>
+                        {% endifequal %}
+                        {% ifequal formula-type "formula-rf" %}
+                        <tr><td style="padding:2px;">Modifier</td>
+                            <td><select id="mlist">
+                                <option></option>
+                                {% for m in mods %}
+                                    <option value="m:{{m.id}}">{{m.st_name}}.{{m.name}}</option>
+                                {% endfor %}
+                                </select>
+                                <button onclick="aardvark.main.placearg(aardvark.main.getSelectValue('mlist'));" class="btn-builder btn-default">Argument</button>
+                            </td></tr>
+                        {% endifequal %}
+                        <tr><td style="padding:2px;">Variables</td>
+                            <td><input list="vlist" id="vlist-list"/>
+                                <datalist id="vlist"/>
+                                {% for v in variables %}
+                                <option value="{{v}}"/>
+                                {% endfor %}
+                                </datalist>
+                                <button onclick="aardvark.main.placearg('v:' + aardvark.main.getInputValue('vlist-list'));" class="btn-builder btn-default">Variable</button>
+                            </td></tr>
+
+                        <tr><td style="padding:2px;">Constant</td>
+                            <td>
+                                <button onclick="aardvark.main.placearg(this.value);" class="btn-builder btn-default" value="cq:constant_value">Quoted</button>
+                                <button onclick="aardvark.main.placearg(this.value);" class="btn-builder btn-default" value="c:constant_value">Unquoted</button>
+                            </td></tr>
+
+                        <tr><td style="padding:5px;" colspan="2">
+                            Arguments are of the form: <i>flags:argname</i><br/>
+                            Flags: q = quoted (no flag = unquoted)<br/>
+                            v = variable{% ifequal formula-type "formula-rf" %}, r = role ID{% endifequal%}, c =
+                            constant{% ifequal formula-type "formula-rf" %}, m = modifier (target context)
+                            {% endifequal %}<br/>
+                            </td></tr>
+                    </table>
+                </div>
+            </td></tr>
+    </table>
+</div>
+
+{% endblock %}

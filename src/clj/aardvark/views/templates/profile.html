@@ -1,0 +1,31 @@
+{% extends "aardvark/views/templates/base.html" %}
+
+{% block content %}
+  <h2>User profile for {{user.id}}</h2>
+    {% if superadmin %}
+        <form action="{{servlet-context}}/users/update" method="POST">
+    {% else %}
+        <form action="{{servlet-context}}/profile/update" method="POST">
+    {% endif %}
+    <div class="form-group col-lg-3">
+      <label for="first-name">first name</label>
+      <p>
+        <input class="form-control" id="first-name" name="first-name" tabindex="1" type="text" value={{user.first_name}}></input>
+      </p>
+      <label for="last-name">last name</label>
+      <p>
+        <input class="form-control" id="last-name" name="last-name" tabindex="1" type="text" value={{user.last_name}}></input>
+      </p>
+      <label for="email">email</label>
+      <p>
+        <input class="form-control" id="email" name="email" tabindex="1" type="text" value={{user.email}}></input>
+      </p>
+      <label for="password">password</label>
+      <p>
+        <input class="form-control" id="password" name="password" tabindex="1" type="password"></input>
+      </p>
+      <input type="hidden" name="id" value="{{user.id}}"/>
+      <input class="btn" tabindex="4" type="submit" value="update profile">
+    </div>
+  </form>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "aardvark/views/templates/base.html" %}
+{% block content %}
+
+<h3>Datastores</h3>
+
+<div class="jumbotron scrollbox" style="width:100%;">
+    <table border="0" class="declaration-list">
+        <tr><th width="100">Name</th><th width="200">Description</th>
+            <th width="100">Schema</th><th width="100">Context</th><th colspan="2"></th></tr>
+        {% for e in declarations %}
+        <form method="POST" action="{{servlet-context}}/declaration/put">
+            <input type="hidden" name="type" value="datastore"/>
+            <input type="hidden" name="id" value="{{e.id}}"/>
+            <tr><td><input type="text" name="name" value="{{e.name}}"/></td>
+                <td><input type="text" name="description" value="{{e.description}}"/></td>
+                <td><select name="schema_id">
+                    <option value=""></option>
+                    {% for schema in schemas %}
+                    <option value="{{schema.id}}" {% ifequal schema.id e.schema_id %}selected="selected"{% endifequal %}>
+                        {{schema.name}}</option>
+                    {% endfor %}
+                    </select></td>
+                <td><select name="context_id">
+                    <option value=""></option>
+                    {% for context in contexts %}
+                    <option value="{{context.id}}"{% ifequal context.id e.context_id %}selected="selected"{% endifequal %}>{{context.name}}</option>
+                    {% endfor %}
+                    </select></td>
+            <td><input type="image" src="/img/save-icon.png" width="25" value="save"/></td>
+                <td><a href="{{servlet-context}}/declaration/remove?type=datastore&id={{e.id}}">
+                    <img src="/img/remove-icon.png"/></a></td>
+        </tr>
+        </form>
+        {% endfor %}
+
+        <tr><td colspan="6"/></tr>
+
+        <form method="POST" action="{{servlet-context}}/declaration/put">
+            <input type="hidden" name="type" value="datastore"/>
+            <tr><td><input type="text" name="name" value=""/></td>
+                <td><input type="text" name="description" value=""/></td>
+                <td><select name="schema_id">
+                    <option value=""></option>
+                    {% for schema in schemas %}
+                    <option value="{{schema.id}}">{{schema.name}}</option>
+                    {% endfor %}
+                    </select></td>
+                <td><select name="context_id">
+                    <option value=""></option>
+                    {% for context in contexts %}
+                    <option value="{{context.id}}">{{context.name}}</option>
+                    {% endfor %}
+                    </select></td>
+                <td><input type="image" src="/img/add-icon.png" width="20" value="save"/></td>
+                <td></td>
+        </tr>
+        </form>
+    </table>
+</div>
+
+{% endblock %}

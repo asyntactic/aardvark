@@ -1,0 +1,68 @@
+{% extends "aardvark/views/templates/base.html" %}
+{% block content %}
+
+<h2><a href="{{servlet-context}}/declaration/list?type=semantic-type&render=true">
+        <img src="/img/back.png" width="30"/></a>
+    Semantic Type{% if declaration.id %} {{declaration.name}}
+    {% endif %}</h2>
+<div class="jumbotron">
+    <table border="0">
+        <tr valign="top"><td width="50%">
+            <form action="{{servlet-context}}/declaration/put" method="POST">
+                <input type="hidden" name="type" value="semantic-type"/>
+                <input type="hidden" name="id" value="{{declaration.id}}"/>
+                <table border="0" class="declaration">
+                    <tr><td><span class="label">Name</span></td>
+                        <td><span class="value">
+                            <input type="text" name="name" value="{{declaration.name}}" style="width:100%;"/>
+                            </span></td></tr>
+                    <tr><td><span class="label">Description</span></td>
+                        <td><span class="value">
+                            <textarea name="description" rows="4" cols="30">{{declaration.description}}</textarea>
+                            </span>
+                        </td></tr>
+                    <tr><td><span class="label">Parent</span></td>
+                        <td><span class="value">
+                            <select name="parent_id" style="width:100%;">
+                                <option value=""></option>
+                                {% for st in sts %}
+                                {% ifequal st.id declaration.id %}
+                                {% else %}
+                                <option value="{{st.id}}"
+                                        {% ifequal declaration.parent_id st.id %}selected="selected"{% endifequal %}>{{st.name}}
+                                </option>
+                                {% endifequal %}
+                                {% endfor %}
+                            </select>
+                            </span></td></tr>
+                    <tr>
+                    <td><a href="{{servlet-context}}/declaration/remove?type=semantic-type&id={{declaration.id}}">
+                        <img src="/img/remove-icon.png" width="25"/></a></td>
+                    <td><input type="image" src="/img/save-icon.png" width="25" value="save"/></td>
+                    </tr>
+                </table>
+            </form>
+            </td>
+            <td style="padding-left: 10px" width="50%">
+               <h3>Modifiers</h3>
+                <table border="0" class="declaration-list">
+                    <tr><th width="200">Name</th><th width="200">Description</th></tr>
+                    {% for im in inherited-modifiers %}
+                    <tr><td>{{im.st_name}}.{{im.name}}</td><td>{{im.description}}</td></tr>
+                    {% endfor %}
+                    <tr><td colspan="2"/></tr>
+                    {% for c in children.modifier %}
+                    <tr><td><a href="{{servlet-context}}/declaration/get?type=modifier&id={{c.id}}&render=true">
+                        {% if c.name %}{{c.name}}{% else %}unnamed{% endif %}
+                        </a></td><td>{{c.description}}</td></tr>
+                    {% endfor %}
+
+                    <tr><td colspan="2"><br/><a href="{{servlet-context}}/declaration/put?type=modifier&parent_id={{declaration.id}}">
+                        <img src="/img/add-icon.png" width="15"/></a>
+                        </td></tr>
+                </table>
+            </td></tr>
+    </table>
+</div>
+
+{% endblock %}

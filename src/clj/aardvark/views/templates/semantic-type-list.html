@@ -1,0 +1,20 @@
+{% extends "aardvark/views/templates/base.html" %}
+{% block content %}
+
+<h3>Semantic Types</h3>
+
+<div class="jumbotron scrollbox" style="width:100%;">
+    <table border="0" class="declaration-list">
+        <tr><th width="100">Name</th><th width="200">Description</th></tr>
+        {% for e in declarations %}
+        <tr><td><a href="{{servlet-context}}/declaration/get?type=semantic-type&id={{e.id}}&render=true">
+            {{e.name|default:"Undefined"}}</a></td><td>{{e.description}}</td></tr>
+        {% endfor %}
+
+        <tr><td colspan="2"><br/><a href="{{servlet-context}}/declaration/put?type=semantic-type">
+            <img src="/img/add-icon.png" width="15"/></a>
+            </td></tr>
+    </table>
+</div>
+
+{% endblock %}

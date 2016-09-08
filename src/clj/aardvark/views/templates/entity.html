@@ -1,0 +1,58 @@
+{% extends "aardvark/views/templates/base.html" %}
+{% block content %}
+
+
+
+<h2><a href="{{servlet-context}}/declaration/list?type=entity&render=true">
+        <img src="/img/back.png" width="30"/></a>
+    Entity{% if declaration.id %} {{declaration.name}}
+    {% endif %}</h2>
+<div class="jumbotron">
+    <table border="0">
+        <tr valign="top"><td width="50%">
+            <form action="{{servlet-context}}/declaration/put" method="POST">
+                <input type="hidden" name="type" value="entity"/>
+                <input type="hidden" name="id" value="{{declaration.id}}"/>
+                <table border="0" class="declaration">
+                    <tr><td><span class="label">Name</span></td>
+                        <td><span class="value">
+                            <input type="text" name="name" value="{{declaration.name}}" style="width:100%;"/>
+                            </span></td></tr>
+                    <tr><td><span class="label">Description</span></td>
+                        <td><span class="value">
+                            <textarea name="description" rows="4" cols="30">{{declaration.description}}</textarea>
+                            </span>
+                        </td></tr>
+                    <tr>
+                    <td><a href="{{servlet-context}}/declaration/remove?type=entity&id={{declaration.id}}">
+                        <img src="/img/remove-icon.png" width="25"/></a></td>
+                    <td><input type="image" src="/img/save-icon.png" width="25" value="save"/></td>
+                    </tr>
+                </table>
+            </form>
+            </td width="50%">
+            <td style="padding-left: 10px">
+                <h3>Roles</h3>
+                <table border="0" class="declaration-list">
+                    <tr><th width="100">Name</th><th width="200">Description</th><th></th></tr>
+                    {% for c in children.role %}
+                    <tr><td><a href="{{servlet-context}}/declaration/get?type=role&id={{c.id}}&render=true">
+                        {{c.name|default:"Unnamed"}}
+                        </a></td><td>{{c.description}}
+                            </td><td>
+                                {% if not forloop.first %}
+                                <a href="{{servlet-context}}/declaration/swap-up?type=role&id={{c.id}}">
+                                <img src="/img/swap-up-icon.png" width="25"/></a>
+                                {% endif %}
+                        </td></tr>
+                    {% endfor %}
+
+                    <tr><td colspan="2"><br/><a href="{{servlet-context}}/declaration/put?type=role&parent_id={{declaration.id}}">
+                        <img src="/img/add-icon.png" width="15"/></a>
+                        </td></tr>
+                </table>
+            </td></tr>
+    </table>
+</div>
+
+{% endblock %}

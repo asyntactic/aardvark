@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Aardvark</title>
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{{servlet-context}}/"><img src="/img/logo.png" width="50"/></a>
+                </div>
+                {% block menu %}
+                {% include "aardvark/views/templates/menu.html" %}
+                {% endblock %}
+            </div>
+        </div>
+        <div class="container">
+            <div id="messageholder">
+            {% if any message error %}
+            <div class="messagebox">
+                <ul id="messagelist">
+                {% for msg in message %}
+                    <li><span class="message">{{msg}}</span></li>
+                {% endfor %}
+                {% for msg in error %}
+                    <li><span class="error">{{msg}}</span></li>
+                {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+            </div>
+            {% block content %}
+            {% endblock %}
+        </div>
+        <!-- scripts and styles -->
+        {% style "/css/bootstrap-theme.min.css" %}
+        {% style "/css/bootstrap.min.css" %}
+        {% style "/css/screen.css" %}
+        <script src="//code.jquery.com/jquery-2.0.3.min.js" type="text/javascript"></script>
+        <script src="/js/site.js" type="text/javascript"></script>
+        {% script "/js/bootstrap.min.js" %}
+        <script type="text/javascript">
+            // Detect HTML5 features that are required and warn if they aren't found
+            var datalist_support = 'options' in document.createElement('datalist');
+            var placeholder_support = 'placeholder' in document.createElement('textarea');
+
+            if (!datalist_support || !placeholder_support) {
+                var msg = "<div class='messagebox'><ul><li><span class='error'>Aardvark requires certain HTML5 features that are not supported by your browser: "
+                + (datalist_support ? "" : "datalist ")
+                + (placeholder_support ? "" : "placeholder ")
+                + "</span></li></ul></div>";
+                var ml = document.getElementById('messageholder');
+                ml.insertAdjacentHTML('beforeend', msg);
+            }
+
+        </script>
+    </body>
+</html>

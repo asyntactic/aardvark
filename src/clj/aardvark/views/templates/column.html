@@ -1,0 +1,65 @@
+{% extends "aardvark/views/templates/base.html" %}
+{% block content %}
+
+<h2><a href="{{servlet-context}}/declaration/get?type=table&render=true&id={{declaration.parent_id}}">
+        <img src="/img/back.png" width="30"/></a>
+    Column{% if declaration.id %} {{declaration.name}}
+    {% endif %}</h2>
+<div class="jumbotron">
+    <table border="0">
+        <tr valign="top"><td width="50%">
+            <form action="{{servlet-context}}/declaration/put" method="POST">
+                <input type="hidden" name="type" value="column"/>
+                <input type="hidden" name="id" value="{{declaration.id}}"/>
+                <input type="hidden" name="parent_id" value="{{declaration.parent_id}}"/>
+                <input type="hidden" name="join_type" value="inner"/> <!-- Only inner supported for now; when left_outer and right_outer are supported, make this a dropdown below. -->
+                <table border="0" class="declaration">
+                    <tr><td><span class="label">Name</span></td>
+                        <td><span class="value">
+                            <input type="text" name="name" value="{{declaration.name}}" style="width:100%;"/>
+                            </span></td></tr>
+                    <tr><td><span class="label">Description</span></td>
+                        <td><span class="value">
+                            <textarea name="description" rows="4" cols="30">{{declaration.description}}</textarea>
+                            </span>
+                        </td></tr>
+                    <tr><td><span class="label">Role</span></td>
+                        <td><span class="value">
+                            <select name="role" style="width:100%;">
+                                <option value=""></option>
+                                {% for role in roles %}
+                                <option value="{{role.id}}"
+                                        {% ifequal role.id declaration.role %}selected="selected"
+                                        {% endifequal %}>
+                                    {{role.entityname}}.{{role.name}}</option>
+                                {% endfor %}
+                            </select>
+                            </span>
+                        </td></tr>
+                    <tr><td><span class="label">Foreign Key</span></td>
+                        <td><span class="value">
+                            <select name="fk" style="width:100%;">
+                                <option value=""></option>
+                                {% for col in columns %}
+                                <option value="{{col.id}}"
+                                        {% ifequal col.id declaration.fk %}selected="selected"
+                                        {% endifequal %}>
+                                    {{col.tablename}}.{{col.name}}</option>
+                                {% endfor %}
+                            </select>
+                            </span>
+                        </td></tr>
+                    <tr>
+                    <td><a href="{{servlet-context}}/declaration/remove?type=column&id={{declaration.id}}">
+                        <img src="/img/remove-icon.png" width="25"/></a></td>
+                    <td><input type="image" src="/img/save-icon.png" width="25" value="save"/></td>
+                    </tr>
+                </table>
+            </form>
+            </td>
+            <td style="padding-left: 10px" width="50%">
+            </td></tr>
+    </table>
+</div>
+
+{% endblock %}

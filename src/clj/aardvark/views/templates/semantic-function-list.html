@@ -1,0 +1,28 @@
+{% extends "aardvark/views/templates/base.html" %}
+{% block content %}
+
+<h3>Semantic Functions</h3>
+
+<div class="jumbotron scrollbox" style="width:100%;">
+    <table border="0" class="declaration-list">
+        <tr><th width="100"></th></tr>
+
+        {% for e in declarations %}
+        <tr><td><a href="{{servlet-context}}/declaration/get?type=semantic-function&id={{e.id}}&render=true">
+        {% for m in modifiers %}
+            {% ifequal m.id e.modifier %}
+                {{m.st_name}}.{{m.name}}
+            {% endifequal %}
+        {% endfor %}
+
+            ({{e.source_mv|default:"Undefined"}} &#8594; {{e.target_mv|default:"Undefined"}})
+            </a></td></tr>
+        {% endfor %}
+
+        <tr><td colspan="2"><br/><a href="{{servlet-context}}/declaration/put?type=semantic-function">
+            <img src="/img/add-icon.png" width="15"/></a>
+            </td></tr>
+    </table>
+</div>
+
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "aardvark/views/templates/base.html" %}
+{% block content %}
+
+<h2><a href="{{servlet-context}}/declaration/list?type=semantic-function&render=true&full=true">
+        <img src="/img/back.png" width="30"/></a>
+    Semantic Function {% if declaration.id %} {{declaration.name}}
+    {% endif %}</h2>
+
+<div class="jumbotron">
+    <table border="0">
+        <tr valign="top"><td width="50%">
+            <form action="{{servlet-context}}/declaration/put" method="POST">
+                <input type="hidden" name="type" value="semantic-function"/>
+                <input type="hidden" name="id" value="{{declaration.id}}"/>
+                <table border="0" class="declaration">
+                    <tr><td><span class="label">Source Modifier Value</span></td>
+                        <td><span class="value">
+                            <input type="text" name="source_mv" value="{{declaration.source_mv}}" style="width:100%;"/>
+                            </span>
+                        </td></tr>
+                    <tr><td><span class="label">Target Modifier Value</span></td>
+                        <td><span class="value">
+                            <input type="text" name="target_mv" value="{{declaration.target_mv}}" style="width:100%;"/>
+                            </span>
+                        </td></tr>
+                    <tr><td><span class="label">Modifier</span></td>
+                        <td><span class="value">
+                            <select name="modifier" style="width:100%;">
+                                <option value=""></option>
+                                {% for modifier in modifiers %}
+                                <option value="{{modifier.id}}"
+                                        {% ifequal modifier.id declaration.modifier %}selected="selected"
+                                        {% endifequal %}>
+                                    {{modifier.st_name}}.{{modifier.name}}</option>
+                                {% endfor %}
+                            </select>
+                            </span>
+                        </td></tr>
+
+                    <tr>
+                    <td><a href="{{servlet-context}}/declaration/remove?type=semantic-function&id={{declaration.id}}">
+                        <img src="/img/remove-icon.png" width="25"/></a></td>
+                    <td><input type="image" src="/img/save-icon.png" width="25" value="save"/></td>
+                    </tr>
+                </table>
+            </form>
+            </td>
+            <td style="padding-left: 10px" width="50%">
+                <h4>Formulas</h4>
+                <table border="0" class="declaration-list">
+                    <tr><th></th><th></th><th></th><th></th></tr>
+                    {% for formula in children.formula-sf %}
+                    <form method="POST" action="{{servlet-context}}/declaration/put">
+                        <input type="hidden" name="type" value="formula-sf"/>
+                        <tr><td>{{formula.output|default:"undefined"}} =
+                            {{formula.operation|default:"undefined"}}({{formula.arguments|arguments}})</td>
+                            <td width="30"><a href="{{servlet-context}}/declaration/remove?type=formula-sf&id={{formula.id}}&parent_id={{declaration.id}}">
+                        <img src="/img/remove-icon.png" width="25"/></a></td>
+                            </td><td width="30">
+                                <a href="{{servlet-context}}/declaration/get?type=formula-sf&id={{formula.id}}&render=true">
+                        <img src="/img/edit-icon.png" width="25"/></a></td>
+                            </td><td width="30">
+                                {% if not forloop.first %}
+                                <a href="{{servlet-context}}/declaration/swap-up?type=formula-sf&id={{formula.id}}">
+                                <img src="/img/swap-up-icon.png" width="25"/></a>
+                                {% endif %}
+                            </td></tr>
+                    </form>
+                    {% endfor %}
+                    <tr><td colspan="3"><a href="{{servlet-context}}/declaration/put?type=formula-sf&parent_id={{declaration.id}}">
+                        <img src="/img/add-icon.png" width="15"/></a></td></tr>
+
+                </table>
+            </td></tr>
+    </table>
+</div>
+
+{% endblock %}

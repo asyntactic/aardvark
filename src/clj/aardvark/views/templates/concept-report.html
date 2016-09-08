@@ -1,0 +1,9 @@
+{% extends "aardvark/views/templates/base.html" %}
+{% block content %}
+
+<h2>Concept graph for {{domain-name}} domain</h2>
+<div class="jumbotron scrollbox" style="width:100%;">
+    <img src="{{servlet-context}}/reports/concept-graph" width="600"/>
+</div>
+
+{% endblock %}
