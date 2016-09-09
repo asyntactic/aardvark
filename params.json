@@ -1,6 +1,6 @@
 {
   "name": "Aardvark",
   "tagline": "",
-  "body": "### Welcome to Aardvark\r\nThis site is a placeholder. Who wants to complete it? :-)\r\n\r\nMailing lists:\r\n* Users: https://groups.google.com/forum/#!forum/aardvark-data-users\r\n* Developers: https://groups.google.com/forum/#!forum/aardvark-data-dev\r\n",
+  "body": "### Welcome to Aardvark\r\nAardvark is a documentation and automation tool for normalizing data sets. It utilizes declarative documentation about problem domains, data sets, and about the capabilities of data transformation/compute engines. Metadata goes in, and generated transformation code comes out. Aardvark is a \"design-time\" solution, and is agnostic about \"run-time\" compute solutions, with a framework that will support ETL solutions, Big Data technologies such as Pig, Spark, and Hive, and SQL and NoSQL engines.\r\n\r\nMailing lists:\r\n* Users: https://groups.google.com/forum/#!forum/aardvark-data-users\r\n* Developers: https://groups.google.com/forum/#!forum/aardvark-data-dev\r\n",
   "note": "Don't delete this file! It's used internally to help with page regeneration."
 }
