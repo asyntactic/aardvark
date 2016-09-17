@@ -18,7 +18,9 @@
 ;;;; generate this state).
 
 (defn make-pipeline [domain-id]
-  {:domain-id domain-id :columns-by-field {} :fields-by-role {} :all-fields #{} :constants #{} :last-added nil :output []})
+  {:domain-id domain-id :columns-by-field {} :fields-by-role {} :all-fields #{} :constants #{} :last-added nil 
+   :output [] :register nil})
+;; The register is just a convenient bucket in which a template might keep some arbitrary state between functional calls
 
 (defn add-constant [pipeline constant] 
   "Add a static field to the pipeline, representing a global constant"
@@ -62,4 +64,5 @@
 (defn append [pipeline item]
   "Append a new line to the output state"
   (update-in pipeline [:output] #(conj % item)))
+
 

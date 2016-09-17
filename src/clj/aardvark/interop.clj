@@ -8,7 +8,8 @@
 
 (def templates 
   [(aardvark.engine.templates.pig/template-instance) 
-   (aardvark.engine.templates.logging/template-instance)])
+   (aardvark.engine.templates.logging/template-instance)
+   (aardvark.engine.templates.sql/template-instance)])
 
 (def default-template (first templates))
 
