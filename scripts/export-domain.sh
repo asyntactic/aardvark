@@ -1,3 +1,5 @@
+#!/bin/bash
+
 ID=$1
 USER=$2
 PW=$3
